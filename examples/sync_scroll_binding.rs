@@ -53,7 +53,9 @@ struct LensedWidget {
     text: String,
 }
 
-impl Bindable for LensedWidget {}
+impl BindableAccess for LensedWidget {
+    bindable_self_body!();
+}
 
 impl LensedWidget {
     pub fn new(font_name: String, text: String) -> Self {

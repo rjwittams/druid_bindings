@@ -1,45 +1,10 @@
 use druid::{
     BoxConstraints, Data, Env, Event, EventCtx, LayoutCtx, Lens, LifeCycle, LifeCycleCtx, PaintCtx,
-    Selector, Size, UpdateCtx, Widget,
+    Selector, Size, UpdateCtx, Widget
 };
 use std::marker::PhantomData;
+use crate::BindableAccess;
 
-/// This trait indicates that a class is a wrapper of another widget that may have API you wish to access.
-/// Used by BindingHost to "reach inside" things like LensWrapped in order to find the right widget to control,
-/// given the bindings that it has.
-///
-/// Widgets that expect to be "bound" should implement this trait and return themselves.
-/// Widgets that wrap another widget and do not provide anything likely to need binding should
-/// recurse and call the same method on their inner widget.
-///
-/// This scheme isn't perfect as it stops at the first Bindable in all cases. However it covers the common case of
-/// binding something that is already lensed
-pub trait BindableAccess {
-    /// What is the wrapped type being accessed through this implementation
-    type Wrapped;
-    /// Get immutable access to the wrapped instance.
-    fn bindable(&self) -> &Self::Wrapped;
-    /// Get mutable access to the wrapped instance.
-    fn bindable_mut(&mut self) -> &mut Self::Wrapped;
-}
-
-///  Its not possible to provide default impls of these traits because of the type parameters on Widgets
-///  So we have a marker trait Bindable,
-///  and for now the wrappers need their own implementations (to access their inner widget)
-pub trait Bindable {}
-
-impl<B: Bindable> BindableAccess for B {
-    /// Anything bindable wraps itself
-    type Wrapped = Self;
-
-    fn bindable(&self) -> &Self::Wrapped {
-        self
-    }
-
-    fn bindable_mut(&mut self) -> &mut Self::Wrapped {
-        self
-    }
-}
 
 /// This is a two way binding between some data, and something it is controlling.
 /// Usually this will be synchronising one bit of information in each,

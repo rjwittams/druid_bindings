@@ -1,30 +1,19 @@
+use crate::bindable_access::*;
 use crate::binding::*;
 use druid::widget::prelude::*;
-use druid::widget::{Axis, IdentityWrapper, LensWrap, Scroll};
+use druid::widget::{Axis, IdentityWrapper, LensWrap, Scroll, WidgetWrapper};
 use std::marker::PhantomData;
 
 impl<W: BindableAccess> BindableAccess for IdentityWrapper<W> {
-    type Wrapped = W::Wrapped;
-
-    fn bindable(&self) -> &Self::Wrapped {
-        self.inner.bindable()
-    }
-
-    fn bindable_mut(&mut self) -> &mut Self::Wrapped {
-        self.inner.bindable_mut()
-    }
+    bindable_wrapper_body!();
 }
 
 impl<T, U, L, W: BindableAccess> BindableAccess for LensWrap<T, U, L, W> {
-    type Wrapped = W::Wrapped;
+    bindable_wrapper_body!();
+}
 
-    fn bindable(&self) -> &Self::Wrapped {
-        self.inner.bindable()
-    }
-
-    fn bindable_mut(&mut self) -> &mut Self::Wrapped {
-        self.inner.bindable_mut()
-    }
+impl<T, W> BindableAccess for Scroll<T, W> {
+    bindable_self_body!();
 }
 
 /// A bindable property to allow scroll offsets to be linked to app data.
@@ -86,4 +75,3 @@ impl<T, W: Widget<T>> BindableProperty for ScrollToProperty<T, W> {
     }
 }
 
-impl<T, W> Bindable for Scroll<T, W> {}
