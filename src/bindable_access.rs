@@ -19,7 +19,7 @@ pub trait BindableAccess {
 
 /// We can't blanket implement these because of coherence
 #[macro_export]
-macro_rules! bindable_wrapper_body{
+macro_rules! bindable_wrapper_body {
     () => {
         type Wrapped = W::Wrapped;
 
@@ -30,11 +30,11 @@ macro_rules! bindable_wrapper_body{
         fn bindable_mut(&mut self) -> &mut Self::Wrapped {
             self.wrapped_mut().bindable_mut()
         }
-    }
+    };
 }
 
 #[macro_export]
-macro_rules! bindable_self_body{
+macro_rules! bindable_self_body {
     () => {
         type Wrapped = Self;
 
@@ -45,5 +45,5 @@ macro_rules! bindable_self_body{
         fn bindable_mut(&mut self) -> &mut Self::Wrapped {
             self
         }
-    }
+    };
 }

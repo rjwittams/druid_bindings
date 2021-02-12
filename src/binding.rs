@@ -1,10 +1,9 @@
+use crate::BindableAccess;
 use druid::{
     BoxConstraints, Data, Env, Event, EventCtx, LayoutCtx, Lens, LifeCycle, LifeCycleCtx, PaintCtx,
-    Selector, Size, UpdateCtx, Widget
+    Selector, Size, UpdateCtx, Widget,
 };
 use std::marker::PhantomData;
-use crate::BindableAccess;
-
 
 /// This is a two way binding between some data, and something it is controlling.
 /// Usually this will be synchronising one bit of information in each,

@@ -1,11 +1,8 @@
 use druid::piet::{Color, Text, TextLayoutBuilder};
 use druid::widget::prelude::*;
-use druid_bindings::*;
-use druid::widget::{
-    Axis, DefaultScopePolicy, Flex, Label, Padding, Scope,
-    Scroll, TextBox,
-};
+use druid::widget::{Axis, DefaultScopePolicy, Flex, Label, Padding, Scope, Scroll, TextBox};
 use druid::{AppLauncher, Data, Lens, LocalizedString, WidgetExt, WindowDesc};
+use druid_bindings::*;
 
 #[derive(Data, Lens, Debug, Clone)]
 struct OuterState {

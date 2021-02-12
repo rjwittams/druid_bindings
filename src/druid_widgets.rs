@@ -1,5 +1,6 @@
 use crate::bindable_access::*;
 use crate::binding::*;
+use druid::kurbo::Rect;
 use druid::widget::prelude::*;
 use druid::widget::{Axis, IdentityWrapper, LensWrap, Scroll, WidgetWrapper};
 use std::marker::PhantomData;
@@ -19,7 +20,7 @@ impl<T, W> BindableAccess for Scroll<T, W> {
 /// A bindable property to allow scroll offsets to be linked to app data.
 /// Useful within composite components with linked scroll areas (eg tables)
 pub struct ScrollToProperty<T, W> {
-    direction: Axis, // We have no public direction/axis type, but two private ones. Sigh.
+    direction: Axis,
     phantom_t: PhantomData<T>,
     phantom_w: PhantomData<W>,
 }
@@ -59,6 +60,7 @@ impl<T, W: Widget<T>> BindableProperty for ScrollToProperty<T, W> {
         _env: &Env,
     ) {
         if !controlled.offset_for_axis(self.direction).same(field_val) {
+            log::info!("Scroll change in binding");
             *change = Some(())
         }
     }
@@ -75,3 +77,57 @@ impl<T, W: Widget<T>> BindableProperty for ScrollToProperty<T, W> {
     }
 }
 
+pub struct ScrollRectProperty<T, W> {
+    phantom_t: PhantomData<T>,
+    phantom_w: PhantomData<W>,
+}
+
+impl<T, W> Default for ScrollRectProperty<T, W> {
+    fn default() -> Self {
+        Self {
+            phantom_t: Default::default(),
+            phantom_w: Default::default(),
+        }
+    }
+}
+
+impl<T, W: Widget<T>> BindableProperty for ScrollRectProperty<T, W> {
+    type Controlled = Scroll<T, W>;
+    type Value = Rect;
+    type Change = ();
+
+    fn write_prop(
+        &self,
+        controlled: &mut Self::Controlled,
+        ctx: &mut UpdateCtx,
+        position: &Self::Value,
+        _env: &Env,
+    ) {
+        //controlled.scroll_to_on_axis(self.direction, *position);
+        //ctx.request_paint()
+    }
+
+    fn append_changes(
+        &self,
+        controlled: &Self::Controlled,
+        field_val: &Self::Value,
+        change: &mut Option<Self::Change>,
+        _env: &Env,
+    ) {
+        if !controlled.viewport_rect().same(field_val) {
+            log::info!("Scroll rect change in binding");
+            *change = Some(())
+        }
+    }
+
+    fn update_data_from_change(
+        &self,
+        controlled: &Self::Controlled,
+        _ctx: &EventCtx,
+        field: &mut Self::Value,
+        _change: Self::Change,
+        _env: &Env,
+    ) {
+        *field = controlled.viewport_rect()
+    }
+}
