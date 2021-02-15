@@ -98,9 +98,9 @@ impl<T, W: Widget<T>> BindableProperty for ScrollRectProperty<T, W> {
 
     fn write_prop(
         &self,
-        controlled: &mut Self::Controlled,
-        ctx: &mut UpdateCtx,
-        position: &Self::Value,
+        _controlled: &mut Self::Controlled,
+        _ctx: &mut UpdateCtx,
+        _position: &Self::Value,
         _env: &Env,
     ) {
         //controlled.scroll_to_on_axis(self.direction, *position);
