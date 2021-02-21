@@ -7,7 +7,7 @@
 /// recurse and call the same method on their inner widget.
 ///
 /// This scheme isn't perfect as it stops at the first Bindable in all cases. However it covers the common case of
-/// binding something that is already lensed
+/// binding something that is already lensed.
 pub trait BindableAccess {
     /// What is the wrapped type being accessed through this implementation
     type Wrapped;
