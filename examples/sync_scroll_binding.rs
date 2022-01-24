@@ -37,11 +37,11 @@ impl InnerState {
 }
 
 pub fn main() {
-    let window = WindowDesc::new(build_widget)
+    let window = WindowDesc::new(build_widget())
         .window_size(Size::new(700.0, 300.0)) // build_inner_widget)
         .title(LocalizedString::new("scroll-demo-window-title").with_placeholder("Scroll demo"));
     AppLauncher::with_window(window)
-        .use_simple_logger()
+        .log_to_console()
         .launch(OuterState::new("Piet Mondrian".into(), "Artist".into()))
         //.launch(InnerState::new("bob".into()))
         .expect("launch failed");
